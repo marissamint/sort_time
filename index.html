@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estimated Sort Calculator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page-shell">
+    <section class="hero">
+      <p class="eyebrow">Flow Cytometry Tools</p>
+      <h1>Estimated Sort Calculator</h1>
+      <p class="hero-copy">
+        Estimate sort duration, tube capacity, and event rate using the same core logic as the original worksheet,
+        now packaged as a clearer browser app.
+      </p>
+    </section>
+
+    <section class="mode-panel">
+      <div class="section-heading">
+        <h2>What do you need to know?</h2>
+        <p>Choose a question to highlight the right inputs and the primary result card.</p>
+      </div>
+      <div id="modeSwitcher" class="mode-switcher" role="tablist" aria-label="Calculation modes"></div>
+    </section>
+
+    <div class="layout-grid">
+      <section class="input-stack">
+        <form id="calculatorForm" class="panel">
+          <div class="section-heading">
+            <h2>Instrument Settings</h2>
+            <p>Set nozzle, purity mode, and flow rate.</p>
+          </div>
+          <div class="field-grid">
+            <label class="field" data-key="precisionMode">
+              <span>Precision Mode</span>
+              <select name="precisionMode" id="precisionMode"></select>
+              <small class="hint">Determines the number and identity of droplets selected for sorting.</small>
+            </label>
+            <label class="field" data-key="nozzle">
+              <span>Nozzle</span>
+              <select name="nozzle" id="nozzle"></select>
+              <small class="hint">The 85um nozzle is appropriate for most common cell types.</small>
+            </label>
+            <label class="field" data-key="flowRate">
+              <span>Flow Rate</span>
+              <input type="number" id="flowRate" name="flowRate" min="1" max="5" step="1" placeholder="1-5">
+              <small class="hint">For sensitive cells, flow rate should not exceed 2.</small>
+            </label>
+          </div>
+
+          <div class="section-heading section-gap">
+            <h2>Sample Settings</h2>
+            <p>Describe the sample and collection setup.</p>
+          </div>
+          <div class="field-grid">
+            <label class="field" data-key="initialSampleVolumeUl">
+              <span>Initial Sample Volume</span>
+              <div class="input-with-unit">
+                <input type="number" id="initialSampleVolumeUl" name="initialSampleVolumeUl" min="0" step="0.01" placeholder="e.g. 1000">
+                <span class="unit">uL</span>
+              </div>
+            </label>
+            <label class="field" data-key="initialCollectionMediaUl">
+              <span>Initial Collection Media</span>
+              <div class="input-with-unit">
+                <input type="number" id="initialCollectionMediaUl" name="initialCollectionMediaUl" min="0" step="0.01" placeholder="e.g. 500">
+                <span class="unit">uL</span>
+              </div>
+            </label>
+            <label class="field" data-key="sampleConcentrationCellsPerMl">
+              <span>Sample Concentration</span>
+              <div class="input-with-unit">
+                <input type="number" id="sampleConcentrationCellsPerMl" name="sampleConcentrationCellsPerMl" min="0" step="1" placeholder="cells/mL">
+                <span class="unit">cells/mL</span>
+              </div>
+              <small class="hint">Dead cells or debris not counted here will raise actual event rate.</small>
+            </label>
+            <label class="field" data-key="collectionVessel">
+              <span>Collection Vessel</span>
+              <select name="collectionVessel" id="collectionVessel"></select>
+            </label>
+          </div>
+
+          <div class="section-heading section-gap">
+            <h2>Estimated / Desired Variables</h2>
+            <p>Enter the expected sort conditions or desired output target.</p>
+          </div>
+          <div class="field-grid">
+            <label class="field" data-key="expectedEventRate">
+              <span>Expected Event Rate</span>
+              <div class="input-with-unit">
+                <input type="number" id="expectedEventRate" name="expectedEventRate" min="0" step="0.01" placeholder="e.g. 5000">
+                <span class="unit">evt/s</span>
+              </div>
+              <small class="hint">We typically sort at event rates at or below 5,000 evt/s.</small>
+            </label>
+            <label class="field" data-key="targetFrequencyPercent">
+              <span>Target Population Frequency</span>
+              <div class="input-with-unit">
+                <input type="number" id="targetFrequencyPercent" name="targetFrequencyPercent" min="0" max="100" step="0.0001" placeholder="% total">
+                <span class="unit">% total</span>
+              </div>
+            </label>
+            <label class="field" data-key="desiredSortedCells">
+              <span>Sorted Cells per Sample</span>
+              <div class="input-with-unit">
+                <input type="number" id="desiredSortedCells" name="desiredSortedCells" min="0" step="1" placeholder="e.g. 100000">
+                <span class="unit">cells</span>
+              </div>
+            </label>
+          </div>
+        </form>
+
+        <section class="panel notes-panel">
+          <div class="section-heading">
+            <h2>Guidance</h2>
+            <p>Highlights the current mode you have selected.</p>
+          </div>
+          <div id="legendCards" class="legend-grid"></div>
+          <ul class="notes-list">
+            <li>Lower event rate, smaller nozzle, higher target frequency, and a less pure precision mode all increase sort efficiency.</li>
+            <li>Lower than expected population frequency or event rate will increase required sort time.</li>
+            <li>Minimum sort time only accounts for active sorting, not setup, compensation, or additional samples.</li>
+            <li>Actual event rate can vary due to the presence of dead cells and debris.</li>
+          </ul>
+        </section>
+      </section>
+
+      <section class="result-stack">
+        <section class="panel">
+          <div class="section-heading">
+            <h2>Results</h2>
+            <p>Values will update instantly as you type.</p>
+          </div>
+          <div id="statusBanner" class="status-banner" hidden></div>
+          <div id="resultCards" class="result-grid"></div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
