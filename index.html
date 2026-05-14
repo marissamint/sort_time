@@ -151,6 +151,12 @@
           <p>The number of cells you would like to be sorted for each sample.</p>
           <p class="definition-note">Note: This is not the total number of cells, just the number you want sorted into the collection tube.</p>
         </article>
+		<article class="definition-item">
+          <p><strong>Expected frequency of sorted populations (%Total)</strong></p>
+          <p>The frequency (% of Total events) of your target population for sorting</p>
+          <p class="definition-note">Note: If you are sorting multiple populations, this should be your lowest frequency.</p>
+		  <p class="definition-note">Note: Debris and dead cells count as part of your total, so your %Total may be less than you expect based on population frequencies alone</p>
+        </article>
         <article class="definition-item">
           <p><strong>Expected Event Rate (evt/s)</strong></p>
           <p>The expected threshold rate for sorting.</p>
@@ -159,7 +165,7 @@
         <article class="definition-item">
           <p><strong>Sort Efficiency (%)</strong></p>
           <p>Percentage of selected cells that were successfully sorted.</p>
-          <p class="definition-note">Note: A lower event rate, smaller nozzle, and higher population frequency can improve efficiency.</p>
+          <p class="definition-note">Note: A lower event rate, smaller nozzle, higher population frequency, and a less pure precision mode (i.e. Yield) all contribute to higher sort efficiency.</p>
         </article>
         <article class="definition-item">
           <p><strong>Sort Rate (evt/s)</strong></p>
@@ -168,7 +174,8 @@
         <article class="definition-item">
           <p><strong>Estimated minimum sort time per sample</strong></p>
           <p>The minimum time required to sort one sample.</p>
-          <p class="definition-note">Note: A lower event rate or population frequency will increase sorting time.</p>
+          <p class="definition-note">Note: A lower-than-expected event rate or population frequency will increase sorting time.</p>
+		  <p class="definition-note">Note: Minimum sort time only accounts for active sorting. Setup, compensation, and additional samples will all increase the total required booking time.</p>
         </article>
         <article class="definition-item">
           <p><strong>Sample Concentration (cells/ml)</strong></p>
