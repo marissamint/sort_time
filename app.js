@@ -53,7 +53,7 @@
     "Single Cell": {
       sortEfficiencyMaskDrops: null,
       volumeMaskDrops: 1,
-      description: "Droplets containing single target cells centered in the droplet with no nearby non-target cells are sorted. Sort-efficiency-derived outputs are unavailable, matching the spreadsheet."
+      description: "Droplets containing single target cells centered in the droplet with no nearby non-target cells are sorted. Low recovery with high purity for single-cell sorting. Sort-efficiency-derived outputs are unavailable."
     }
   };
 
@@ -405,7 +405,8 @@
   function renderResults(container, banner, state) {
     var mode = findMode(state.mode);
     var calculation = APP.calculateResults(state);
-    var html = [];
+    var primaryHtml = [];
+    var additionalHtml = [];
     var i;
 
     for (i = 0; i < APP.RESULT_DEFS.length; i += 1) {
@@ -420,17 +421,25 @@
         cardClass += " unavailable";
       }
 
-      html.push(
+      var cardHtml =
         '<article class="' + cardClass + '" data-result-key="' + escapeHtml(def.key) + '">' +
           '<span class="result-label">' + escapeHtml(def.label) + "</span>" +
           '<span class="result-value">' + escapeHtml(formatDisplayValue(def, value)) + "</span>" +
           '<p class="result-meta">' + escapeHtml(def.description + " " + def.unit) + "</p>" +
           renderResultNote(def.key, calculation) +
-        "</article>"
-      );
+        "</article>";
+
+      if (i < 4) {
+        primaryHtml.push(cardHtml);
+      } else {
+        additionalHtml.push(cardHtml);
+      }
     }
 
-    container.innerHTML = html.join("");
+    container.innerHTML =
+      primaryHtml.join("") +
+      '<div class="result-divider"><h3>Additional Information</h3></div>' +
+      additionalHtml.join("");
 
     if (calculation.errors.length > 0) {
       banner.hidden = false;

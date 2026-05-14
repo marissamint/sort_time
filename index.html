@@ -20,7 +20,7 @@
     <section class="mode-panel">
       <div class="section-heading">
         <h2>What do you need to know?</h2>
-        <p>Choose a question to highlight the right inputs and the primary result card.</p>
+	<p>(Choose a question to highlight the right inputs and the primary results)</p>
       </div>
       <div id="modeSwitcher" class="mode-switcher" role="tablist" aria-label="Calculation modes"></div>
     </section>
@@ -58,14 +58,14 @@
             <label class="field" data-key="initialSampleVolumeUl">
               <span>Initial Sample Volume</span>
               <div class="input-with-unit">
-                <input type="number" id="initialSampleVolumeUl" name="initialSampleVolumeUl" min="0" step="0.01" placeholder="e.g. 1000">
+                <input type="number" id="initialSampleVolumeUl" name="initialSampleVolumeUl" min="0" step="1" placeholder="e.g. 1000">
                 <span class="unit">uL</span>
               </div>
             </label>
             <label class="field" data-key="initialCollectionMediaUl">
               <span>Initial Collection Media</span>
               <div class="input-with-unit">
-                <input type="number" id="initialCollectionMediaUl" name="initialCollectionMediaUl" min="0" step="0.01" placeholder="e.g. 500">
+                <input type="number" id="initialCollectionMediaUl" name="initialCollectionMediaUl" min="0" step="1" placeholder="e.g. 500">
                 <span class="unit">uL</span>
               </div>
             </label>
@@ -89,9 +89,9 @@
           </div>
           <div class="field-grid">
             <label class="field" data-key="expectedEventRate">
-              <span>Expected Event Rate</span>
+              <span>Expected Event Rate<sup>1</sup></span>
               <div class="input-with-unit">
-                <input type="number" id="expectedEventRate" name="expectedEventRate" min="0" step="0.01" placeholder="e.g. 5000">
+                <input type="number" id="expectedEventRate" name="expectedEventRate" min="0" step="1" placeholder="e.g. 5000">
                 <span class="unit">evt/s</span>
               </div>
               <small class="hint">We typically sort at event rates at or below 5,000 evt/s.</small>
@@ -99,7 +99,7 @@
             <label class="field" data-key="targetFrequencyPercent">
               <span>Target Population Frequency</span>
               <div class="input-with-unit">
-                <input type="number" id="targetFrequencyPercent" name="targetFrequencyPercent" min="0" max="100" step="0.0001" placeholder="% total">
+                <input type="number" id="targetFrequencyPercent" name="targetFrequencyPercent" min="0" max="100" step="1" placeholder="% total">
                 <span class="unit">% total</span>
               </div>
             </label>
@@ -110,22 +110,16 @@
                 <span class="unit">cells</span>
               </div>
             </label>
-          </div>
+	</div>
+<p></p>
+<br>
+<br>
+<br>
+	<small class="hint"><sup>1</sup>If you are unsure of your event rate, you can determine it using this calculator</small>
+<br>
+	<small class="hint"><sup>2</sup>Actual Event Rate (evt/s) will vary due to the presence of dead cells and debris.</small>
         </form>
 
-        <section class="panel notes-panel">
-          <div class="section-heading">
-            <h2>Guidance</h2>
-            <p>Highlights the current mode you have selected.</p>
-          </div>
-          <div id="legendCards" class="legend-grid"></div>
-          <ul class="notes-list">
-            <li>Lower event rate, smaller nozzle, higher target frequency, and a less pure precision mode all increase sort efficiency.</li>
-            <li>Lower than expected population frequency or event rate will increase required sort time.</li>
-            <li>Minimum sort time only accounts for active sorting, not setup, compensation, or additional samples.</li>
-            <li>Actual event rate can vary due to the presence of dead cells and debris.</li>
-          </ul>
-        </section>
       </section>
 
       <section class="result-stack">
@@ -139,6 +133,63 @@
         </section>
       </section>
     </div>
+
+    <section class="panel notes-panel">
+      <div class="section-heading">
+        <h2>Guidance</h2>
+        <p>(Highlights the current mode you have selected)</p>
+      </div>
+      <div id="legendCards" class="legend-grid"></div>
+      <div class="definitions-list">
+        <article class="definition-item">
+          <p><strong>Nozzle</strong></p>
+          <p>Establishes the diameter of the stream and size of the droplet.</p>
+          <p class="definition-note">Note: Larger cells require a larger nozzle; the 85um nozzle is appropriate for most common cell types.</p>
+        </article>
+        <article class="definition-item">
+          <p><strong>Number of sorted cells per sample</strong></p>
+          <p>The number of cells you would like to be sorted for each sample.</p>
+          <p class="definition-note">Note: This is not the total number of cells, just the number you want sorted into the collection tube.</p>
+        </article>
+        <article class="definition-item">
+          <p><strong>Expected Event Rate (evt/s)</strong></p>
+          <p>The expected threshold rate for sorting.</p>
+          <p class="definition-note">Note: Typically kept below 5,000 evt/s. Use the Event Rate Calculator for an estimate.</p>
+        </article>
+        <article class="definition-item">
+          <p><strong>Sort Efficiency (%)</strong></p>
+          <p>Percentage of selected cells that were successfully sorted.</p>
+          <p class="definition-note">Note: A lower event rate, smaller nozzle, and higher population frequency can improve efficiency.</p>
+        </article>
+        <article class="definition-item">
+          <p><strong>Sort Rate (evt/s)</strong></p>
+          <p>The number of cells sorted per second.</p>
+        </article>
+        <article class="definition-item">
+          <p><strong>Estimated minimum sort time per sample</strong></p>
+          <p>The minimum time required to sort one sample.</p>
+          <p class="definition-note">Note: A lower event rate or population frequency will increase sorting time.</p>
+        </article>
+        <article class="definition-item">
+          <p><strong>Sample Concentration (cells/ml)</strong></p>
+          <p>The concentration of cells in your sample.</p>
+        </article>
+        <article class="definition-item">
+          <p><strong>Flow Rate</strong></p>
+          <p>A numerical value that determines the rate a sample is processed.</p>
+          <p class="definition-note">Note: A higher flow rate increases event rate but may stress cells.</p>
+        </article>
+        <article class="definition-item">
+          <p><strong>Estimated True Flow Rate (uL/s)</strong></p>
+          <p>An estimate of the instrument's actual flow rate.</p>
+        </article>
+        <article class="definition-item">
+          <p><strong>Estimated Event Rate (evt/s)</strong></p>
+          <p>The approximate event rate based on sample concentration and flow rate.</p>
+          <p class="definition-note">Note: Dead cells or debris not counted in the sample can lead to a higher actual event rate.</p>
+        </article>
+      </div>
+    </section>
   </main>
 
   <script src="app.js"></script>
