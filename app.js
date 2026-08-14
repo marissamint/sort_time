@@ -72,8 +72,8 @@
   };
 
   APP.FLOW_RATE_EQUATION = {
-    m: 0.1468,
-    b: 0.1932
+    m: 0.1419,
+    b: 0.1102
   };
 
   APP.DEFAULT_STATE = {
