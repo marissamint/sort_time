@@ -529,12 +529,16 @@
   }
 
   function formatNumber(value, decimals) {
-    if (!isFiniteNumber(value)) {
-      return "Not available";
-    }
-    var fixed = value.toFixed(decimals);
-    return fixed.replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace(/\.00$/, "");
+  if (!isFiniteNumber(value)) {
+    return "Not available";
   }
+
+  var fixed = value.toFixed(decimals);
+  var parts = fixed.split(".");
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  return parts.join(".").replace(/\.00$/, "");
+}
 
   function formatDuration(seconds) {
     if (!isFiniteNumber(seconds) || seconds < 0) {
