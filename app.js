@@ -155,10 +155,10 @@
       formatter: function (value) { return formatNumber(value, 4); }
     },
     {
-      key: "volumePerSortedCellNl",
-      label: "Volume per Sorted Cell",
-      unit: "nL",
-      description: "Estimated collection volume consumed per sorted cell.",
+      key: "totalSortedCellsVolumeUl",
+      label: "Total Volume of Sorted Cell",
+      unit: "uL",
+      description: "Sorted cells per sample multiplied by precision-mode collection voluyme per sorted cell",
       formatter: function (value) { return formatNumber(value, 2); }
     }
   ];
@@ -205,6 +205,7 @@
     var sortEfficiencyPercent = null;
     var sortRate = null;
     var volumePerSortedCellNl = null;
+    var totalSortedCellsVolumeUl = null;
     var timeToSampleDepletionSeconds = null;
     var timeToTargetCellsSeconds = null;
     var maxSortedCellsPerTube = null;
@@ -231,6 +232,10 @@
 
     if (precisionInfo && isFiniteNumber(dropletVolumeNl)) {
       volumePerSortedCellNl = precisionInfo.volumeMaskDrops * dropletVolumeNl;
+    }
+
+    if (isFiniteNumber(desiredSortedCells) && isFiniteNumber(volumePerSortedCellNl)) {
+      totalSortedCellsVolumeUl = desiredSortedCells * volumePerSortedCellNl / 1000;
     }
 
     if (precisionInfo && precisionInfo.sortEfficiencyMaskDrops === null) {
@@ -293,6 +298,7 @@
         targetEventRate: targetEventRate,
         dropletVolumeNl: dropletVolumeNl,
         flowRateUlPerSec: flowRateUlPerSec,
+        totalSortedCellsVolumeUl: totalSortedCellsVolumeUl,
         volumePerSortedCellNl: volumePerSortedCellNl
       },
       meta: {
