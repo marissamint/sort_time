@@ -71,9 +71,10 @@
     "50 mL Falcon": 50000
   };
 
+// Edit flow rate equation here:
   APP.FLOW_RATE_EQUATION = {
-    m: 0.1419,
-    b: 0.1102
+    m: 0.1266,
+    b: 0.0883
   };
 
   APP.DEFAULT_STATE = {
