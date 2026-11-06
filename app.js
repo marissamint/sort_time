@@ -8,7 +8,7 @@
       id: "deplete",
       title: "How long will it take to deplete my sample?",
       description: "Highlights the settings needed to estimate sample depletion time.",
-      requiredKeys: ["flowRate", "initialSampleVolumeUl"],
+      requiredKeys: ["sorter", "nozzle", "flowRate", "initialSampleVolumeUl"],
       primaryResult: "timeToSampleDepletionSeconds"
     },
     {
@@ -28,8 +28,8 @@
     {
       id: "eventRate",
       title: "What will my event rate be?",
-      description: "Estimates event rate from concentration and flow rate.",
-      requiredKeys: ["flowRate", "sampleConcentrationCellsPerMl"],
+      description: "Estimates event rate from concentration, flow rate, sorter, and nozzle.",
+      requiredKeys: ["sorter", "nozzle", "flowRate", "sampleConcentrationCellsPerMl"],
       primaryResult: "eventRateFromConcentration"
     }
   ];
@@ -71,14 +71,25 @@
     "50 mL Falcon": 50000
   };
 
-// Edit flow rate equation here:
-  APP.FLOW_RATE_EQUATION = {
-    m: 0.1266,
-    b: 0.0883
+  // Actual flow rate (uL/s) = m * flow setting + b, by sorter and nozzle.
+  APP.FLOW_RATE_EQUATIONS = {
+    "Fusion": {
+      "70um": { m: 0.1598, b: 0.1813 },
+      "85um": { m: 0.1638, b: 0.1736 },
+      "100um": { m: 0.1573, b: 0.1104 },
+      "130um": { m: 0.169, b: 0.071 }
+    },
+    "Fusion 5L": {
+      "70um": { m: 0.1422, b: -0.0113 },
+      "85um": { m: 0.1178, b: 0.0639 },
+      "100um": { m: 0.1201, b: 0.0207 },
+      "130um": { m: 0.1205, b: -0.0217 }
+    }
   };
 
   APP.DEFAULT_STATE = {
     mode: "targetCells",
+    sorter: "Fusion",
     precisionMode: "4-way Purity",
     nozzle: "85um",
     flowRate: "",
@@ -117,7 +128,7 @@
       key: "eventRateFromConcentration",
       label: "Estimated Event Rate",
       unit: "evt/s",
-      description: "Approximate event rate at the selected flow rate and sample concentration.",
+      description: "Approximate event rate for the selected sorter, nozzle, flow setting, and sample concentration.",
       formatter: function (value) { return formatNumber(value, 2); }
     },
     {
@@ -152,7 +163,7 @@
       key: "flowRateUlPerSec",
       label: "Flow Rate",
       unit: "uL/s",
-      description: "Estimated true flow rate for the selected flow setting.",
+      description: "Estimated true flow rate for the selected sorter, nozzle, and flow setting.",
       formatter: function (value) { return formatNumber(value, 4); }
     },
     {
@@ -173,6 +184,8 @@
     var warningMessages = [];
     var errors = [];
     var nozzleInfo = APP.NOZZLES[state.nozzle] || null;
+    var sorterEquations = APP.FLOW_RATE_EQUATIONS[state.sorter];
+    var flowRateEquation = sorterEquations ? sorterEquations[state.nozzle] : null;
     var precisionInfo = APP.PRECISION_MODE_INFO[state.precisionMode] || null;
     var vesselMaxVolume = APP.COLLECTION_VESSELS[state.collectionVessel];
 
@@ -212,7 +225,9 @@
     var maxSortedCellsPerTube = null;
 
     if (isFiniteNumber(flowRate)) {
-      flowRateUlPerSec = APP.FLOW_RATE_EQUATION.m * flowRate + APP.FLOW_RATE_EQUATION.b;
+      if (flowRateEquation) {
+        flowRateUlPerSec = flowRateEquation.m * flowRate + flowRateEquation.b;
+      }
       if (flowRate > 2) {
         statusMessages.push("For sensitive cells, flow rate should not exceed 2.");
       }
@@ -331,6 +346,7 @@
     var statusBanner = document.getElementById("statusBanner");
     var legendCards = document.getElementById("legendCards");
 
+    populateSelect("sorter", getKeys(APP.FLOW_RATE_EQUATIONS));
     populateSelect("precisionMode", getKeys(APP.PRECISION_MODE_INFO));
     populateSelect("nozzle", getKeys(APP.NOZZLES));
     populateSelect("collectionVessel", getKeys(APP.COLLECTION_VESSELS));

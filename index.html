@@ -30,9 +30,14 @@
         <form id="calculatorForm" class="panel">
           <div class="section-heading">
             <h2>Instrument Settings</h2>
-            <p>Set nozzle, purity mode, and flow rate.</p>
+            <p>Set sorter, nozzle, purity mode, and flow rate.</p>
           </div>
           <div class="field-grid">
+            <label class="field" data-key="sorter">
+              <span>Sorter</span>
+              <select name="sorter" id="sorter"></select>
+	      <small class="hint">Each sorter processes samples at different speeds.</small>
+            </label>
             <label class="field" data-key="precisionMode">
               <span>Precision Mode</span>
               <select name="precisionMode" id="precisionMode"></select>
@@ -188,11 +193,11 @@
         </article>
         <article class="definition-item">
           <p><strong>Estimated True Flow Rate (uL/s)</strong></p>
-          <p>An estimate of the instrument's actual flow rate.</p>
+          <p>An estimate of the instrument's actual flow rate based on the selected sorter, nozzle, and flow setting.</p>
         </article>
         <article class="definition-item">
           <p><strong>Estimated Event Rate (evt/s)</strong></p>
-          <p>The approximate event rate based on sample concentration and flow rate.</p>
+          <p>The approximate event rate based on sample concentration and the actual flow rate for the selected sorter and nozzle.</p>
           <p class="definition-note">Note: Dead cells or debris not counted in the sample can lead to a higher actual event rate.</p>
         </article>
       </div>
